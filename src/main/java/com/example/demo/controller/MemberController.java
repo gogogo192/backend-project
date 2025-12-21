@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.entity.Member;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,14 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public Member getMember(@PathVariable Long id){
-        return memberService.findById(id);
+    public ResponseEntity<Member> getMember(@PathVariable("id") Long id){
+        try {
+            Member member = memberService.findById(id);
+            return ResponseEntity.ok(member);
+        } catch (Exception e) {
+            e.printStackTrace(); // 로그 확인
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")
@@ -35,7 +43,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMember(@PathVariable Long id){
+    public void deleteMember(@PathVariable("id") Long id){
         memberService.delete(id);
     }
 }
