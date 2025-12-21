@@ -1,11 +1,46 @@
+version: "3.9"
+
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:8.0
+    container_name: demo_mysql
     environment:
       MYSQL_DATABASE: mydatabase
       MYSQL_USER: myuser
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: verysecret
     ports:
-      - '58123:3306'  # 호스트:컨테이너 포트 고정
+      - "58123:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # DB가 완전히 켜졌는지 확인하는 로직 추가
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
     restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: demo_app:latest
+    container_name: demo_app
+    ports:
+      - "8080:8080"
+    environment:
+      # 도커 내부에서는 서비스 이름인 'mysql'과 내부 포트 '3306'을 써야 합니다.
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydatabase?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: secret
+      # JPA 테이블 생성을 강제하는 설정 추가
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    # 중요: DB가 'healthy' 상태가 될 때까지 기다렸다가 앱 실행
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  mysql_data:
