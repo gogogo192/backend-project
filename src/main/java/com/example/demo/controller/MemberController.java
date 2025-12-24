@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Member;
+import com.example.demo.dto.MemberRequestDto;
+import com.example.demo.dto.MemberResponseDto;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,33 +18,28 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public Member signup(@RequestBody Member member){
-        return memberService.signup(member);
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto requestDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signup(requestDto));
     }
 
     @GetMapping
-    public List<Member> getAllMembers(){
-        return memberService.findAll();
+    public ResponseEntity<List<MemberResponseDto>> getAllMembers(){
+        return ResponseEntity.ok(memberService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Member> getMember(@PathVariable("id") Long id){
-        try {
-            Member member = memberService.findById(id);
-            return ResponseEntity.ok(member);
-        } catch (Exception e) {
-            e.printStackTrace(); // 로그 확인
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<MemberResponseDto> getMember(@PathVariable("id") Long id){
+        return ResponseEntity.ok(memberService.findById(id));
     }
 
     @PutMapping("/{id}")
-    public Member updateMember(@PathVariable Long id, @RequestBody Member member){
-        return memberService.update(id,member);
+    public ResponseEntity<MemberResponseDto> updateMember(@PathVariable Long id, @RequestBody MemberRequestDto requestDto){
+        return ResponseEntity.ok(memberService.update(id, requestDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMember(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteMember(@PathVariable("id") Long id){
         memberService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
