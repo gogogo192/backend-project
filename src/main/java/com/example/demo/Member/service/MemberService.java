@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.Member.service;
 
-import com.example.demo.dto.MemberRequestDto;
-import com.example.demo.dto.MemberResponseDto;
-import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.Member.dto.MemberRequestDto;
+import com.example.demo.Member.dto.MemberResponseDto;
+import com.example.demo.Member.entity.Member;
+import com.example.demo.Member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,4 +57,6 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
         memberRepository.delete(member);
     }
+
+
 }

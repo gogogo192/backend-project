@@ -1,6 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.Member.dto;
 
-import com.example.demo.entity.Member;
+import com.example.demo.Member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 

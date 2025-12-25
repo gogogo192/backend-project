@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo.Member.controller;
 
-import com.example.demo.dto.MemberRequestDto;
-import com.example.demo.dto.MemberResponseDto;
-import com.example.demo.service.MemberService;
+import com.example.demo.Member.dto.MemberRequestDto;
+import com.example.demo.Member.dto.MemberResponseDto;
+import com.example.demo.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
