@@ -26,9 +26,9 @@ public class Member {
     private String name;
 
     // 비즈니스 로직 연동: 1:1 멤버십 관계 추가
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "membership_id")
-    private Membership membership;
+    private Membership membership = new Membership();
 
     // 편의 메서드: 회원가입 시 기본 멤버십(BRONZE)을 자동으로 생성해주기 위함
     public void assignDefaultMembership(Membership membership) {
