@@ -1,6 +1,7 @@
 package com.example.demo.Member.dto;
 
 import com.example.demo.Member.entity.Member;
+import com.example.demo.Member.repository.MemberRepository;
 import lombok.Getter;
 
 @Getter
@@ -18,4 +19,6 @@ public class MemberResponseDto {
         this.tier = (member.getMembership() != null) ?
                 member.getMembership().getTier().name() : "NONE";
     }
+
+
 }

@@ -22,6 +22,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signup(requestDto));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<MemberResponseDto> login(@RequestBody MemberRequestDto requestDto) {
+        MemberResponseDto response = memberService.login(requestDto.getEmail(), requestDto.getPassword());
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public ResponseEntity<List<MemberResponseDto>> getAllMembers(){
         return ResponseEntity.ok(memberService.findAll());
